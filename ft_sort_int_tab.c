@@ -7,10 +7,7 @@ void	put_array(int *tab, int size)
 
 	printf("[");
 	while (i < size - 1)
-	{
-		printf("%d, ", tab[i]);
-		i++;
-	}
+		printf("%d, ", tab[i++]);
 	printf("%d]\n\n", tab[i]);
 }
 
@@ -40,22 +37,24 @@ int	*find_max(int *tab, int size)
 
 void	ft_sort_int_tab(int *tab, int size)
 {
-	int	i;
 	int	*max;
 	int	last;
+	int	count;
 
-	i = 0;
+	count = 0;
 	last = size - 1;
-	while (i < (last + 1))
+	while (0 < (last + 1))
 	{
 		if (*(max = find_max(tab, (last + 1))) > tab[last])
 		{
 			printf("swap: %d <-> %d\n\n", *max, tab[last]);
 			ft_swap(max, &tab[last]);
 			put_array(tab, size);
+			count++;
 		}
 		last--;
 	}
+	printf("Total swaps: %d\n", count);
 }
 
 void	fill_tab(char **argv, int *tab, int size)
@@ -64,6 +63,12 @@ void	fill_tab(char **argv, int *tab, int size)
 	while (i < size)
 	{
 		tab[i] = atoi(argv[i + 1]);
+		if (tab[i] == 0 && *argv[i + 1] != '0')
+		{
+			printf("Argumento %d não é um número\n", i + 1);
+			free(tab);
+			exit(1);
+		}
 		i++;
 	}
 }
@@ -72,21 +77,22 @@ int	main(int argc, char **argv)
 {
 	int	*tab;
 	int	size;
+
 	if (argc < 2)
 	{
 		printf("Passe numeros para serem ordenados como argumentos");
-		return(2);
+		return (2);
 	}
 	size = argc - 1;
 	tab = malloc(sizeof(int) * size);
-	fill_tab(argv, tab, size);
 	if (!tab)
 	{
 		free(tab);
 		return (1);
 	}
-	// int tab[8] = {78, 23, 1, 3, 48, 5, 17, 59};
+	fill_tab(argv, tab, size);
 	put_array(tab, size);
 	ft_sort_int_tab(tab, size);
+	free(tab);
 	return (0);
 }

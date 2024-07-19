@@ -37,7 +37,7 @@ size ?= 8
 
 # Tester
 test:
-	@$(eval ARG = $(shell seq -1000 1000 | shuf -n $(size)))
+	@$(eval ARG = $(shell seq -10000 10000 | shuf -n $(size)))
 	@./sort $(ARG)
 
 # Declaração de phony targets
